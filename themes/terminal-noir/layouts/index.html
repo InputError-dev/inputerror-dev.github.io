@@ -1,13 +1,13 @@
 {{ define "main" }}
 <ul class="post-list">
-  {{ range .Site.RegularPages.ByDate.Reverse }}
+  {{ range where .Site.RegularPages "Section" "posts" }}
+  {{ if not .Draft }}
   <li class="post-item">
     <a href="{{ .Permalink }}">{{ .Title }}</a>
     <span class="post-meta">{{ .Date.Format "2006-01-02" }}</span>
-    {{ if .Summary }}
     <p class="post-summary">{{ .Summary | plainify | truncate 200 }}</p>
-    {{ end }}
   </li>
+  {{ end }}
   {{ end }}
 </ul>
 {{ end }}
