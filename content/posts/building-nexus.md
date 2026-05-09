@@ -2,7 +2,7 @@
 title: 'Building Nexus: A Multi-Agent AI Orchestration System'
 date: 2026-05-09
 draft: false
-description: 'How I built a multi-agent AI system that coordinates specialized agents across content, development, and infrastructure — running 24/7 on hardware I own.'
+description: 'How I built a multi-agent AI system that coordinates specialized agents across content, development, and infrastructure, running 24/7 on hardware I own.'
 tags:
   - ai
   - agents
@@ -19,7 +19,7 @@ here's what i built, why, and the decisions that mattered.
 
 ## the problem
 
-most "ai agent" setups i see are single-threaded. one model, one context window, one shot at getting it right. if you want to do multiple things — write code, run tests, monitor infrastructure, publish content — you either cram it all into one agent or you manually context-switch between sessions.
+most "ai agent" setups i see are single-threaded. one model, one context window, one shot at getting it right. if you want to do multiple things (write code, run tests, monitor infrastructure, or publish content), you either cram it all into one agent or you manually context-switch between sessions.
 
 that's not an agent system. that's a fancier chat interface.
 
@@ -29,7 +29,7 @@ i wanted something where specialized agents exist permanently, each with its own
 
 hub and spoke. one orchestrator agent receives every input, classifies urgency, decomposes tasks, and dispatches to domain-specific workers. workers report back. the orchestrator synthesizes and returns.
 
-urgency is tiered t0 through t5. a disk filling up is t0 — immediate action. a blog post draft is t3 — get to it within 24 hours. system health logs are t5 — informational only.
+urgency is tiered t0 through t5. a disk filling up is t0, immediate action. a blog post draft is t3, get to it within 24 hours. system health logs are t5, informational only.
 
 this prevents the system from being paralyzed by trivia. a compliance flag on a content draft doesn't interrupt a running code build. it gets queued at its tier and handled when resources are available.
 
@@ -37,7 +37,7 @@ this prevents the system from being paralyzed by trivia. a compliance flag on a 
 
 the server is an amd machine with an nvidia gpu, ░░░░ gb ram, and ░░░░ tb of nvme storage running linux. local inference runs through ollama with a mix of models for different capability tiers. the gateway layer is openclaw ░░░░, which handles routing, session management, and channel integration.
 
-cloud apis are used selectively — only for the tasks where local models aren't sufficient. cloud inference costs ░░░░ per month at current usage. the entire local inference layer costs zero marginal dollars.
+cloud apis are used selectively, only for the tasks where local models aren't sufficient. cloud inference costs ░░░░ per month at current usage. the entire local inference layer costs zero marginal dollars.
 
 agent frameworks are langgraph for state management and crewai for domain pipeline orchestration. secrets live in hashicorp vault. the human interface is a discord bot. all vault content is version-controlled in git and pushed to a remote hourly.
 
@@ -49,45 +49,45 @@ the workhorse is a ░░░░-parameter local model that handles content writi
 
 the fallback chain is critical. if the primary model is down, the system degrades to the next available tier, not to zero. local models fall back to other local models. cloud models fall back to cheaper cloud models.
 
-## phase 1 — core agent system
+## phase 1: core agent system
 
 the first build was the skeleton. orchestrator, synthesis agent, urgency classification, and the agent definition format.
 
-every agent is defined in a single markdown file with identity, responsibilities, memory paths, escalation rules, and a system prompt. version-tracked. no database schema, no yaml config — just markdown in a git repo.
+every agent is defined in a single markdown file with identity, responsibilities, memory paths, escalation rules, and a system prompt. version-tracked. no database schema, no yaml config, just markdown in a git repo.
 
 this turned out to be the right call. agents are easy to create, modify, and document. the format is trivially parseable and human-readable. when an agent misbehaves, the definition is right there with a changelog.
 
-## phase 2 — infrastructure
+## phase 2: infrastructure
 
 the infrastructure monitor was the first permanent agent. it polls ollama, ram, cpu, disk, docker, network, and api spend every ░░░░ minutes. enforces api budget caps. escalates critical failures immediately.
 
 this paid for itself within hours. a runaway build process filled the disk to ░░░░ percent. the monitor caught it, posted a t0 alert, and the orchestrator suspended the build pipeline until the issue was resolved. without it, the entire system would have locked up overnight.
 
-## phase 3 — development pipeline
+## phase 3: development pipeline
 
-coder agent handles code generation and refactoring. testing agent validates every coder output by running the test suite. after three consecutive failures, the planner/debugger agent takes over — this is the only agent that uses the most capable cloud model, because it handles the hard problems.
+coder agent handles code generation and refactoring. testing agent validates every coder output by running the test suite. after three consecutive failures, the planner/debugger agent takes over. this is the only agent that uses the most capable cloud model, because it handles the hard problems.
 
 dependency watcher scans all active projects nightly for cves and outdated packages. critical vulnerabilities post as t1 alerts.
 
 this pipeline has caught things that would have been embarrassing in production. a mismatched dependency version. a test suite that passed locally but failed on clean install. edge cases in error handling that the coder missed.
 
-## phase 4 — content pipeline
+## phase 4: content pipeline
 
 the content pipeline was the most fun to build. watch agent monitors news sources every ░░░░ hours and scores relevance against configured content pillars. seo agent researches keywords before long-form content. content writer drafts in a defined voice. compliance review gates everything against platform tos, legal risk, and accuracy checks.
 
 the watch agent found a zero-day disclosure six hours before it hit mainstream security news. that's the kind of thing that makes the pipeline worth having.
 
-social media adaptation and multi-platform publishing are staged — the infrastructure is built but the api integrations aren't wired yet.
+social media adaptation and multi-platform publishing are staged. the infrastructure is built but the api integrations aren't wired yet.
 
 ## key decisions
 
 **local-first.** cloud inference is convenient but it creates dependency. i wanted a system that could operate offline for the core workflows. local models handle ░░░░ percent of the volume. cloud apis are reserved for tasks that genuinely need the capability delta. this also means the monthly operating cost is predictable and low.
 
-**deepseek over claude for orchestration.** the orchestrator handles high volume — every message, every dispatch, every synthesis. at scale, claude's per-token cost adds up fast. deepseek provides comparable reasoning at a fraction of the cost. claude is reserved for the planner/debugger agent where the additional reasoning capability genuinely matters.
+**deepseek over claude for orchestration.** the orchestrator handles high volume: every message, every dispatch, every synthesis. at scale, claude's per-token cost adds up fast. deepseek provides comparable reasoning at a fraction of the cost. claude is reserved for the planner/debugger agent where the additional reasoning capability genuinely matters.
 
 **discord as the human interface.** not a custom web ui, not a slack app, not a terminal. discord was already where i spend time. the bot posts to channels, threads organize conversations, reactions trigger workflows. it's not elegant but it works and i don't have to maintain a frontend.
 
-**git as the memory layer.** agent definitions, context documents, project records — all in git. hourly commits for active sections, nightly commits for archives. this means rollback is always `git checkout`. no database corruption, no migration scripts, no backup strategy beyond what git already provides.
+**git as the memory layer.** agent definitions, context documents, project records: all in git. hourly commits for active sections, nightly commits for archives. this means rollback is always `git checkout`. no database corruption, no migration scripts, no backup strategy beyond what git already provides.
 
 **terminal noir aesthetic.** dark background, cream text, muted gold borders. no gradients, no rounded corners, no sans-serif fonts. every interface i build follows the same visual language. it started in the aleph tui and carried into the design system for anything nexus-produced.
 
@@ -105,15 +105,15 @@ what the system can do right now:
 
 ## what's next
 
-phase 5 — publishing and social media automation. the agents are defined and tested. they need api integrations to actually post.
+phase 5: publishing and social media automation. the agents are defined and tested. they need api integrations to actually post.
 
 the osint tool (aleph) is being refactored into a modular provider architecture. once that's stable, it feeds back into the watch agent and content pipeline.
 
-and i want to improve the agent definition format — make escalation rules more expressive and add circuit breaker patterns for cascading failures.
+and i want to improve the agent definition format: make escalation rules more expressive and add circuit breaker patterns for cascading failures.
 
 ## the point
 
-this isn't about replacing developers or writers. it's about having reliable, specialized agents that handle the work i'd otherwise do manually — monitoring, triaging, drafting, testing — so i can focus on the parts that need actual judgment.
+this isn't about replacing developers or writers. it's about having reliable, specialized agents that handle the work i'd otherwise do manually: monitoring, triaging, drafting, testing so i can focus on the parts that need actual judgment.
 
 the system runs on hardware i own, costs pocket change per month, and gets better every time i add an agent or refine a prompt.
 
