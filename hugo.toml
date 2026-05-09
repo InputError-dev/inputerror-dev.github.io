@@ -1,0 +1,25 @@
+baseURL = 'https://inputerror-dev.github.io/'
+languageCode = 'en-us'
+title = 'InputError'
+theme = 'terminal-noir'
+[pagination]
+  pagerSize = 10
+
+[params]
+  description = 'Security research, tools, and thoughts.'
+  github = 'https://github.com/InputError-dev'
+  author = 'InputError'
+
+[menu]
+  [[menu.main]]
+    name = 'Blog'
+    url = '/'
+    weight = 1
+  [[menu.main]]
+    name = 'GitHub'
+    url = 'https://github.com/InputError-dev'
+    weight = 2
+  [[menu.main]]
+    name = 'Donate'
+    url = '/donate'
+    weight = 3
