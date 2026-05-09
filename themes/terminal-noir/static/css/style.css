@@ -174,3 +174,10 @@ a:hover { color: var(--text); }
 
 /* Paragraph spacing */
 .post-content p + p { margin-top: 1.25rem; }
+
+.post-summary {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  line-height: 1.5;
+}
