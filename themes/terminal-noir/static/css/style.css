@@ -167,3 +167,7 @@ footer {
   body { padding: 1rem; }
   nav { flex-wrap: wrap; gap: 1rem; }
 }
+
+/* Fix all link colors */
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--text); }
