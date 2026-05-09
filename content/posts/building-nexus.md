@@ -39,7 +39,7 @@ the server is an amd machine with an nvidia gpu, ░░░░ gb ram, and ░░
 
 cloud apis are used selectively, only for the tasks where local models aren't sufficient. cloud inference costs ░░░░ per month at current usage. the entire local inference layer costs zero marginal dollars.
 
-agent frameworks are langgraph for state management and crewai for domain pipeline orchestration. secrets live in hashicorp vault. the primary interface is the openclaw gateway (web chat), with discord handling outbound notifications and alerts. all vault content is version-controlled in git and pushed to a remote hourly.
+agent frameworks are langgraph for state management and crewai for domain pipeline orchestration. secrets live in hashicorp vault. the primary interface is the openclaw tui (terminal), with discord handling outbound notifications and alerts. all vault content is version-controlled in git and pushed to a remote hourly.
 
 ## the models
 
@@ -85,7 +85,7 @@ social media adaptation and multi-platform publishing are staged. the infrastruc
 
 **deepseek over claude for orchestration.** the orchestrator handles high volume: every message, every dispatch, every synthesis. at scale, claude's per-token cost adds up fast. deepseek provides comparable reasoning at a fraction of the cost. claude is reserved for the planner/debugger agent where the additional reasoning capability genuinely matters.
 
-**openclaw for interaction, discord for alerts.** i primarily talk to the system through the openclaw web chat — it's where i give commands, get responses, and steer agents. discord handles the outbound side: alerts, notifications, draft reviews, and status updates go to channels. reactions trigger workflows. it's not elegant but discord's new id verification rules killed any remaining social use for me, so it became a tool. it works and i don't have to maintain a frontend.
+**openclaw tui for interaction, discord for alerts.** i talk to the system through the openclaw terminal ui — raw input, no web frontend — it's where i give commands, get responses, and steer agents. discord handles the outbound side: alerts, notifications, draft reviews, and status updates go to channels. reactions trigger workflows. it's not elegant but discord's new id verification rules killed any remaining social use for me, so it became a tool. it works and i don't have to maintain a frontend.
 
 i also set up a vpn so i can ssh in from my phone or laptop when i'm out. i never leave the house, so i have no idea why i did that. but it's there.
 
@@ -97,7 +97,7 @@ i also set up a vpn so i can ssh in from my phone or laptop when i'm out. i neve
 
 what the system can do right now:
 
-- accept any input via web chat or discord, classify urgency, and route to the right agent
+- accept any input via terminal or discord, classify urgency, and route to the right agent
 - generate, test, and debug code across multiple projects
 - write content in a consistent voice, review for compliance, and prepare for publishing
 - monitor infrastructure and api spend 24/7
