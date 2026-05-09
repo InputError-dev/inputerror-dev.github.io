@@ -75,7 +75,7 @@ this pipeline has caught things that would have been embarrassing in production.
 
 the content pipeline was the most fun to build. watch agent monitors news sources every ░░░░ hours and scores relevance against configured content pillars. seo agent researches keywords before long-form content. content writer drafts in a defined voice. compliance review gates everything against platform tos, legal risk, and accuracy checks.
 
-the watch agent found a zero-day disclosure six hours before it hit mainstream security news. that's the kind of thing that makes the pipeline worth having.
+the watch agent surfaced the dirty frag disclosure from a sans diary entry before it hit the broader news cycle. that alone justified the pipeline.
 
 social media adaptation and multi-platform publishing are staged. the infrastructure is built but the api integrations aren't wired yet.
 
