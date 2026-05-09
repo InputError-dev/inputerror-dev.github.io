@@ -194,3 +194,11 @@ a:hover { color: var(--text); }
   color: var(--accent);
   letter-spacing: 0.05em;
 }
+
+/* Force paragraph and header styles - override browser defaults */
+article.post-content p,
+div.post-content p { 
+}
+div.post-content h2,
+div.post-content h3 {
+}
